@@ -31,9 +31,10 @@ def db_check(request):
     """Database check endpoint"""
     try:
         with connection.cursor() as cursor:
-            cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+            cursor.execute("""
+                SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';
+            """)
             tables = [row[0] for row in cursor.fetchall()]
-        
         return JsonResponse({
             'status': 'database_ok',
             'tables': tables,

@@ -10,10 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
-from dotenv import load_dotenv
 import os
 from pathlib import Path
-load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
+try:
+    import dj_database_url
+except ImportError:
+    raise ImportError("dj-database-url must be installed. Add it to your requirements.txt.")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,12 +27,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-your-secret-key-here')
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
 # Allow Render domain and localhost for development
-ALLOWED_HOSTS = [
-    'gemini-back-clone.onrender.com',
-    'localhost',
-    '127.0.0.1',
-    '*'
-]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,*.onrender.com').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -87,14 +84,20 @@ WSGI_APPLICATION = 'gemini_backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 # Use PostgreSQL if DATABASE_URL is available, otherwise SQLite
-import dj_database_url
-
 DATABASES = {
     'default': dj_database_url.config(
         default=os.getenv('DATABASE_URL', 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')),
         conn_max_age=600,
+        conn_health_checks=True,
     )
 }
+
+# Database connection settings for PostgreSQL
+if 'postgresql' in DATABASES['default']['ENGINE']:
+    DATABASES['default']['OPTIONS'] = {
+        'connect_timeout': 10,
+        'application_name': 'gemini_backend',
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

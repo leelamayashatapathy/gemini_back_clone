@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: gemini-backend
+    name: gemini_back_clone
     env: python
     buildCommand: bash build.sh
     startCommand: gunicorn gemini_backend.wsgi:application

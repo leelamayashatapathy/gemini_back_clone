@@ -12,7 +12,7 @@ services:
       - key: DEBUG
         value: false
       - key: ALLOWED_HOSTS
-        value: "*.onrender.com"
+        value: "*.onrender.com,gemini-back-clone.onrender.com,gemini-backend.onrender.com,gemini-backend-clone.onrender.com"
       - key: DATABASE_URL
         fromService:
           type: pserv

@@ -12,9 +12,25 @@ pip install -r requirements.txt
 echo "📁 Collecting static files..."
 python manage.py collectstatic --no-input
 
+# Create database directory if it doesn't exist
+echo "🗄️ Setting up database..."
+mkdir -p $(dirname $(python -c "import os; from pathlib import Path; print(os.path.join(Path(__file__).resolve().parent, 'db.sqlite3'))"))
+
 # Run migrations with error handling
-echo "🗄️ Running database migrations..."
+echo "🔄 Running database migrations..."
+python manage.py makemigrations --noinput || true
 python manage.py migrate --noinput
 
-# Create superuser if needed (optional)
+# Create a superuser for admin access (optional)
+echo "👤 Creating admin user..."
+python manage.py shell -c "
+from django.contrib.auth import get_user_model
+User = get_user_model()
+if not User.objects.filter(username='admin').exists():
+    User.objects.create_superuser('admin', 'admin@example.com', 'admin123')
+    print('Admin user created: admin/admin123')
+else:
+    print('Admin user already exists')
+" || echo "Could not create admin user"
+
 echo "✅ Build completed successfully!" 

@@ -12,10 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
-try:
-    import dj_database_url
-except ImportError:
-    raise ImportError("dj-database-url must be installed. Add it to your requirements.txt.")
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -86,18 +83,11 @@ WSGI_APPLICATION = 'gemini_backend.wsgi.application'
 # Use PostgreSQL if DATABASE_URL is available, otherwise SQLite
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL', 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')),
+        default=os.environ.get('DATABASE_URL'),
         conn_max_age=600,
-        conn_health_checks=True,
+        ssl_require=True
     )
 }
-
-# Database connection settings for PostgreSQL
-if 'postgresql' in DATABASES['default']['ENGINE']:
-    DATABASES['default']['OPTIONS'] = {
-        'connect_timeout': 10,
-        'application_name': 'gemini_backend',
-    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

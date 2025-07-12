@@ -44,6 +44,37 @@ services:
       - key: CORS_ALLOW_ALL_ORIGINS
         value: true
 
+  - type: worker
+    name: gemini-backend-celery
+    env: python
+    buildCommand: bash build.sh
+    startCommand: celery -A gemini_backend worker --loglevel=info
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: DATABASE_URL
+        fromService:
+          type: pserv
+          name: gemini-backend-postgres
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: gemini-backend-redis
+          property: connectionString
+      - key: CELERY_BROKER_URL
+        fromService:
+          type: redis
+          name: gemini-backend-redis
+          property: connectionString
+      - key: CELERY_RESULT_BACKEND
+        fromService:
+          type: redis
+          name: gemini-backend-redis
+          property: connectionString
+      - key: GEMINI_API_KEY
+        sync: false
+
   - type: pserv
     name: gemini-backend-postgres
     env: postgresql

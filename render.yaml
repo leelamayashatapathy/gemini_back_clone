@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: gemini-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn gemini_backend.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: USE_SQLITE
+        value: true
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: gemini-backend-redis
+          property: connectionString
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: STRIPE_PUBLISHABLE_KEY
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+
+services:
+  - type: redis
+    name: gemini-backend-redis
+    ipAllowList: [] 

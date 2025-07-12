@@ -1,0 +1,143 @@
+{
+  "info": {
+    "_postman_id": "gemini-backend-clone-collection",
+    "name": "Gemini Backend Clone API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Signup",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "http://127.0.0.1:8000/auth/signup/", "protocol": "http", "host": ["127.0.0.1"], "port": "8000", "path": ["auth", "signup"] },
+        "body": { "mode": "raw", "raw": "{\n  \"mobile\": \"1234567890\",\n  \"email\": \"test@example.com\",\n  \"password\": \"testpass123\"\n}" }
+      }
+    },
+    {
+      "name": "Auth - Send OTP",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "http://127.0.0.1:8000/auth/send-otp/", "protocol": "http", "host": ["127.0.0.1"], "port": "8000", "path": ["auth", "send-otp"] },
+        "body": { "mode": "raw", "raw": "{\n  \"mobile\": \"1234567890\",\n  \"purpose\": \"signup\"\n}" }
+      }
+    },
+    {
+      "name": "Auth - Verify OTP (Get JWT)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "http://127.0.0.1:8000/auth/verify-otp/", "protocol": "http", "host": ["127.0.0.1"], "port": "8000", "path": ["auth", "verify-otp"] },
+        "body": { "mode": "raw", "raw": "{\n  \"mobile\": \"1234567890\",\n  \"code\": \"123456\",\n  \"purpose\": \"signup\"\n}" }
+      }
+    },
+    {
+      "name": "Auth - Forgot Password",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "http://127.0.0.1:8000/auth/forgot-password/", "protocol": "http", "host": ["127.0.0.1"], "port": "8000", "path": ["auth", "forgot-password"] },
+        "body": { "mode": "raw", "raw": "{\n  \"mobile\": \"1234567890\"\n}" }
+      }
+    },
+    {
+      "name": "Auth - Change Password",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+        ],
+        "url": { "raw": "http://127.0.0.1:8000/auth/change-password/", "protocol": "http", "host": ["127.0.0.1"], "port": "8000", "path": ["auth", "change-password"] },
+        "body": { "mode": "raw", "raw": "{\n  \"old_password\": \"testpass123\",\n  \"new_password\": \"newpass456\"\n}" }
+      }
+    },
+    {
+      "name": "Chatroom - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+        ],
+        "url": { "raw": "http://127.0.0.1:8000/chatroom/create/", "protocol": "http", "host": ["127.0.0.1"], "port": "8000", "path": ["chatroom", "create"] },
+        "body": { "mode": "raw", "raw": "{\n  \"name\": \"Test Room\"\n}" }
+      }
+    },
+    {
+      "name": "Chatroom - List",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+        ],
+        "url": { "raw": "http://127.0.0.1:8000/chatroom/", "protocol": "http", "host": ["127.0.0.1"], "port": "8000", "path": ["chatroom"] }
+      }
+    },
+    {
+      "name": "Chatroom - Detail",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+        ],
+        "url": { "raw": "http://127.0.0.1:8000/chatroom/1/", "protocol": "http", "host": ["127.0.0.1"], "port": "8000", "path": ["chatroom", "1"] }
+      }
+    },
+    {
+      "name": "Chatroom - Send Message",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+        ],
+        "url": { "raw": "http://127.0.0.1:8000/chatroom/1/message/", "protocol": "http", "host": ["127.0.0.1"], "port": "8000", "path": ["chatroom", "1", "message"] },
+        "body": { "mode": "raw", "raw": "{\n  \"content\": \"Hello Gemini!\"\n}" }
+      }
+    },
+    {
+      "name": "Subscription - Pro (Stripe Checkout)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+        ],
+        "url": { "raw": "http://127.0.0.1:8000/subscription/pro/", "protocol": "http", "host": ["127.0.0.1"], "port": "8000", "path": ["subscription", "pro"] }
+      }
+    },
+    {
+      "name": "Subscription - Status",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+        ],
+        "url": { "raw": "http://127.0.0.1:8000/subscription/status/", "protocol": "http", "host": ["127.0.0.1"], "port": "8000", "path": ["subscription", "status"] }
+      }
+    },
+    {
+      "name": "Subscription - Stripe Webhook",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "http://127.0.0.1:8000/subscription/webhook/stripe/", "protocol": "http", "host": ["127.0.0.1"], "port": "8000", "path": ["subscription", "webhook", "stripe"] },
+        "body": { "mode": "raw", "raw": "{}" }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "jwt_token", "value": "" }
+  ]
+} 

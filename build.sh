@@ -12,10 +12,6 @@ pip install -r requirements.txt
 echo "📁 Collecting static files..."
 python manage.py collectstatic --no-input
 
-# Create database directory if it doesn't exist
-echo "🗄️ Setting up database..."
-mkdir -p $(dirname $(python -c "import os; from pathlib import Path; print(os.path.join(Path(__file__).resolve().parent, 'db.sqlite3'))"))
-
 # Run migrations with error handling
 echo "🔄 Running database migrations..."
 python manage.py makemigrations --noinput || true

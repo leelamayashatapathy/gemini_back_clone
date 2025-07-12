@@ -13,8 +13,11 @@ services:
         value: false
       - key: ALLOWED_HOSTS
         value: ".onrender.com"
-      - key: USE_SQLITE
-        value: true
+      - key: DATABASE_URL
+        fromService:
+          type: pserv
+          name: gemini-backend-postgres
+          property: connectionString
       - key: REDIS_URL
         fromService:
           type: redis
@@ -29,7 +32,11 @@ services:
       - key: STRIPE_WEBHOOK_SECRET
         sync: false
 
-services:
+  - type: pserv
+    name: gemini-backend-postgres
+    env: postgresql
+    plan: free
+
   - type: redis
     name: gemini-backend-redis
     ipAllowList: [] 

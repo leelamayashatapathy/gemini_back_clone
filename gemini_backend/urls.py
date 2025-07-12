@@ -16,41 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.http import JsonResponse
-from django.db import connection
-
-def health_check(request):
-    """Simple health check endpoint"""
-    return JsonResponse({
-        'status': 'healthy',
-        'message': 'Gemini Backend Clone is running!',
-        'version': '1.0.0'
-    })
-
-def db_check(request):
-    """Database check endpoint"""
-    try:
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';
-            """)
-            tables = [row[0] for row in cursor.fetchall()]
-        return JsonResponse({
-            'status': 'database_ok',
-            'tables': tables,
-            'message': f'Database has {len(tables)} tables'
-        })
-    except Exception as e:
-        return JsonResponse({
-            'status': 'database_error',
-            'error': str(e)
-        }, status=500)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('authentication.urls')),
     path('chatroom/', include('chatrooms.urls')),
     path('subscriptions/', include('subscriptions.urls')),
-    path('health/', health_check, name='health_check'),
-    path('db-check/', db_check, name='db_check'),
 ]

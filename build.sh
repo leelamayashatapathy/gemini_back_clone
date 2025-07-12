@@ -25,17 +25,35 @@ echo "🗄️  Setting up PostgreSQL database..."
 # Check if DATABASE_URL is set
 if [ -z "$DATABASE_URL" ]; then
     echo "❌ ERROR: DATABASE_URL is not set!"
-    echo "Please ensure PostgreSQL service is connected in render.yaml"
-    exit 1
+    echo "This usually means the PostgreSQL service is not connected properly."
+    echo "Please check your render.yaml configuration."
+    echo "Waiting 10 seconds for database to be ready..."
+    sleep 10
+    if [ -z "$DATABASE_URL" ]; then
+        echo "❌ DATABASE_URL still not available after waiting."
+        exit 1
+    fi
 fi
 
-echo "✅ DATABASE_URL is configured"
+echo "✅ DATABASE_URL is configured: ${DATABASE_URL:0:30}..."
+
+# Wait for database to be ready
+echo "⏳ Waiting for PostgreSQL to be ready..."
+for i in {1..30}; do
+    if python manage.py dbshell -c "SELECT 1;" >/dev/null 2>&1; then
+        echo "✅ Database is ready!"
+        break
+    fi
+    echo "⏳ Attempt $i/30: Database not ready yet..."
+    sleep 2
+done
 
 # Test database connection
 echo "🔗 Testing database connection..."
 python manage.py dbshell -c "SELECT version();" || {
     echo "❌ ERROR: Cannot connect to PostgreSQL database!"
-    echo "Please check your DATABASE_URL configuration"
+    echo "DATABASE_URL: ${DATABASE_URL:0:50}..."
+    echo "This might be a connection issue or the database is not ready."
     exit 1
 }
 echo "✅ Database connection successful"

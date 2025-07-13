@@ -33,4 +33,10 @@ class ForgotPasswordSerializer(serializers.Serializer):
 
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(write_only=True)
-    new_password = serializers.CharField(write_only=True) 
+    new_password = serializers.CharField(write_only=True)
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'mobile', 'email', 'first_name', 'last_name', 'date_joined']
+        read_only_fields = ['id', 'date_joined'] 

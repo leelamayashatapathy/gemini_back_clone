@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status, permissions
 from django.contrib.auth import get_user_model, authenticate
 from .models import OTP
-from .serializers import SignupSerializer, SendOTPSerializer, VerifyOTPSerializer, ForgotPasswordSerializer, ChangePasswordSerializer
+from .serializers import SignupSerializer, SendOTPSerializer, VerifyOTPSerializer, ForgotPasswordSerializer, ChangePasswordSerializer, UserProfileSerializer
 from django.utils import timezone
 from rest_framework_simplejwt.tokens import RefreshToken
 import random
@@ -85,3 +85,11 @@ class ChangePasswordView(APIView):
             user.save()
             return Response({'message': 'Password changed successfully'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserProfileView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request):
+        """Returns details about the currently authenticated user"""
+        serializer = UserProfileSerializer(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)

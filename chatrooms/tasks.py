@@ -14,4 +14,5 @@ def process_gemini_message(message_id):
     content = get_message_content(message_id)
     if content:
         ai_response = get_gemini_response(content)
-        Message.objects.filter(id=message_id).update(ai_response=ai_response) 
+        Message.objects.filter(id=message_id).update(ai_response=ai_response)
+    return True 

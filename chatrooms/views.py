@@ -11,17 +11,13 @@ from core.services.gemini import get_gemini_response
 
 CACHE_TTL = 300  # 5 minutes
 
-class ChatroomCreateView(generics.CreateAPIView):
-    serializer_class = ChatroomCreateSerializer
-    permission_classes = [IsAuthenticated]
-    
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+
 
 class ChatroomListView(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request):
+        """Lists all chatrooms for the user (with caching)"""
         cache_key = f"chatrooms_user_{request.user.id}"
         data = cache.get(cache_key)
         if not data:
@@ -29,6 +25,17 @@ class ChatroomListView(APIView):
             data = ChatroomListSerializer(chatrooms, many=True).data
             cache.set(cache_key, data, timeout=CACHE_TTL)
         return Response(data)
+    
+    def post(self, request):
+        """Creates a new chatroom for the authenticated user"""
+        serializer = ChatroomCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            chatroom = serializer.save(user=request.user)
+            # Clear cache for this user
+            cache_key = f"chatrooms_user_{request.user.id}"
+            cache.delete(cache_key)
+            return Response(ChatroomListSerializer(chatroom).data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ChatroomDetailView(generics.RetrieveAPIView):
     serializer_class = ChatroomDetailSerializer

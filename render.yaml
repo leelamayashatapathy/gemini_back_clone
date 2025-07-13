@@ -19,20 +19,11 @@ services:
           name: gemini-backend-postgres
           property: connectionString
       - key: REDIS_URL
-        fromService:
-          type: redis
-          name: gemini-backend-redis
-          property: connectionString
+        value: redis://default:AcqKAAIjcDE4MDExMmFhNGU0NmRmYmM5Njk0Yzc4NzUwNTcyYXAxMA@true-quagga-51850.upstash.io:6379
       - key: CELERY_BROKER_URL
-        fromService:
-          type: redis
-          name: gemini-backend-redis
-          property: connectionString
+        value: redis://default:AcqKAAIjcDE4MDExMmFhNGU0NmRmYmM5Njk0Yzc4NzUwNTcyYXAxMA@true-quagga-51850.upstash.io:6379
       - key: CELERY_RESULT_BACKEND
-        fromService:
-          type: redis
-          name: gemini-backend-redis
-          property: connectionString
+        value: redis://default:AcqKAAIjcDE4MDExMmFhNGU0NmRmYmM5Njk0Yzc4NzUwNTcyYXAxMA@true-quagga-51850.upstash.io:6379
       - key: GEMINI_API_KEY
         sync: false
       - key: STRIPE_PUBLISHABLE_KEY
@@ -58,20 +49,11 @@ services:
           name: gemini-backend-postgres
           property: connectionString
       - key: REDIS_URL
-        fromService:
-          type: redis
-          name: gemini-backend-redis
-          property: connectionString
+        value: rediss://default:AcqKAAIjcDE4MDU2MWExMmFhNGU0NmRmYmM5Njk0Yzc4NzUwNTcyYXAxMA@true-quagga-51850.upstash.io:6379
       - key: CELERY_BROKER_URL
-        fromService:
-          type: redis
-          name: gemini-backend-redis
-          property: connectionString
+        value: rediss://default:AcqKAAIjcDE4MDU2MWExMmFhNGU0NmRmYmM5Njk0Yzc4NzUwNTcyYXAxMA@true-quagga-51850.upstash.io:6379
       - key: CELERY_RESULT_BACKEND
-        fromService:
-          type: redis
-          name: gemini-backend-redis
-          property: connectionString
+        value: rediss://default:AcqKAAIjcDE4MDU2MWExMmFhNGU0NmRmYmM5Njk0Yzc4NzUwNTcyYXAxMA@true-quagga-51850.upstash.io:6379
       - key: GEMINI_API_KEY
         sync: false
 

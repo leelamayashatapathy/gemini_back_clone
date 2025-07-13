@@ -160,7 +160,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',') if os.getenv('CORS_ALLOWED_ORIGINS') else []
 
 # Redis Settings
-REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
+REDIS_URL = os.getenv('REDIS_URL')
 
 # Celery Settings
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', REDIS_URL)

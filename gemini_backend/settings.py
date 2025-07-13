@@ -162,20 +162,7 @@ CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',') if os.ge
 # Redis Settings
 REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 
-# Clean up Redis URL if it's malformed (remove duplicate port numbers)
-if REDIS_URL and '6379' in REDIS_URL:
-    # Remove duplicate port numbers in the URL
-    if REDIS_URL.count('6379') > 1:
-        # More robust cleanup for malformed Redis URLs
-        if '637951850.upstash.io:6379' in REDIS_URL:
-            # Fix the specific malformed URL pattern
-            REDIS_URL = REDIS_URL.replace('637951850.upstash.io:6379', '6379')
-        else:
-            # General cleanup for other malformed patterns
-            parts = REDIS_URL.split('6379')
-            if len(parts) > 2:
-                # Keep only the first occurrence of 6379
-                REDIS_URL = parts[0] + '6379' + parts[-1]
+
 
 # Print Redis URL for debugging
 print(f"🔍 REDIS_URL: {REDIS_URL}")

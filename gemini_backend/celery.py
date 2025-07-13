@@ -6,7 +6,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gemini_backend.settings')
 app = Celery('gemini_backend')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
-# Configure Celery for production with Upstash Redis
+# Configure Celery for production with Render Redis
 app.conf.update(
     broker_connection_retry_on_startup=True,
     task_serializer='json',
@@ -19,6 +19,8 @@ app.conf.update(
     task_soft_time_limit=25 * 60,  # 25 minutes
     worker_prefetch_multiplier=1,
     worker_max_tasks_per_child=1000,
+    broker_connection_retry=True,
+    broker_connection_max_retries=10,
 )
 
 app.autodiscover_tasks() 

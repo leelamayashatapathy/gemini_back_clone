@@ -173,8 +173,9 @@ print(f"🔍 Environment CELERY_BROKER_URL: {os.getenv('CELERY_BROKER_URL', 'NOT
 print(f"🔍 Environment CELERY_RESULT_BACKEND: {os.getenv('CELERY_RESULT_BACKEND', 'NOT_SET')}")
 
 # Celery Settings
-CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', REDIS_URL)
-CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', REDIS_URL)
+# Use Upstash Redis URL as fallback instead of potentially malformed REDIS_URL
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://default:AcqKAAIjcDE4MDU2MWExMmFhNGU0NmRmYmM5Njk0Yzc4NzUwNTcyYXAxMA@true-quagga-51850.upstash.io:6379')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://default:AcqKAAIjcDE4MDU2MWExMmFhNGU0NmRmYmM5Njk0Yzc4NzUwNTcyYXAxMA@true-quagga-51850.upstash.io:6379')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'

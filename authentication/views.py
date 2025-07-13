@@ -38,6 +38,7 @@ class SendOTPView(APIView):
             OTP.objects.create(user=user, code=code, purpose=purpose, expires_at=expires_at)
             return Response({
                 'success': True,
+                'otp': code,
                 'message': f'OTP sent successfully to {mobile}'
             }, status=status.HTTP_200_OK)  # Mocked OTP
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

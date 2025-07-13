@@ -1,6 +1,6 @@
 # 🤖 Gemini Backend Clone - AI-Powered Chat Platform
 
-A sophisticated Django REST Framework backend that creates an AI-powered chat experience using Google's Gemini API. This project demonstrates a complete full-stack assessment with real-time messaging, OTP authentication, subscription management, and intelligent AI responses.
+A sophisticated Django REST Framework backend that creates an AI-powered chat experience using Google's Gemini API. This project demonstrates real-time messaging, OTP authentication, subscription management, and intelligent AI responses.
 
 ## ✨ Features
 
@@ -63,31 +63,7 @@ pip install -r requirements.txt
 ### 2. Environment Configuration
 Create a `.env` file in the project root:
 
-```env
-# Django Settings
-SECRET_KEY=your-super-secret-key-change-in-production
-DEBUG=True
-ALLOWED_HOSTS=localhost,127.0.0.1
 
-# Database
-DATABASE_URL=sqlite:///db.sqlite3
-
-# Redis
-REDIS_URL=redis://localhost:6379/0
-CELERY_BROKER_URL=redis://localhost:6379/0
-CELERY_RESULT_BACKEND=redis://localhost:6379/0
-
-# AI Integration
-GEMINI_API_KEY=your-gemini-api-key-here
-
-# Payments (Optional)
-STRIPE_PUBLISHABLE_KEY=pk_test_your_key
-STRIPE_SECRET_KEY=sk_test_your_key
-STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
-
-# CORS
-CORS_ALLOW_ALL_ORIGINS=True
-```
 
 ### 3. Database Setup
 ```bash
@@ -102,7 +78,7 @@ python manage.py createsuperuser  # Optional
 redis-server
 
 # Terminal 2: Start Celery Worker
-celery -A gemini_backend worker --loglevel=info --pool=solo
+celery -A gemini_backend worker --loglevel=info -P eventlet
 
 # Terminal 3: Start Django Server
 python manage.py runserver
@@ -182,67 +158,7 @@ git commit -m "Production ready"
 git push origin main
 ```
 
-2. **Deploy on Render**
-- Visit [render.com](https://render.com) and create account
-- Click "New +" → "Blueprint"
-- Connect your GitHub repository
-- Click "Apply" to deploy
 
-3. **Environment Variables**
-Add these in your Render web service:
-
-```env
-SECRET_KEY=your-production-secret-key
-DEBUG=False
-ALLOWED_HOSTS=your-app-name.onrender.com
-GEMINI_API_KEY=your-gemini-api-key
-STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
-STRIPE_SECRET_KEY=your-stripe-secret-key
-STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
-REDIS_URL=your-redis-url
-CELERY_BROKER_URL=your-redis-url
-CELERY_RESULT_BACKEND=your-redis-url
-CORS_ALLOW_ALL_ORIGINS=True
-```
-
-4. **Worker Service**
-Create a Background Worker service:
-- **Build Command**: `pip install -r requirements.txt`
-- **Start Command**: `celery -A gemini_backend worker --loglevel=info`
-- Add the same environment variables
-
-## 🧪 Testing the API
-
-### Using cURL
-
-```bash
-# 1. Register a new user
-curl -X POST https://your-app.onrender.com/auth/signup/ \
-  -H "Content-Type: application/json" \
-  -d '{"mobile": "1234567890", "password": "testpass123"}'
-
-# 2. Send OTP
-curl -X POST https://your-app.onrender.com/auth/send-otp/ \
-  -H "Content-Type: application/json" \
-  -d '{"mobile": "1234567890", "purpose": "login"}'
-
-# 3. Verify OTP and get JWT
-curl -X POST https://your-app.onrender.com/auth/verify-otp/ \
-  -H "Content-Type: application/json" \
-  -d '{"mobile": "1234567890", "code": "123456", "purpose": "login"}'
-
-# 4. Create a chatroom
-curl -X POST https://your-app.onrender.com/chatroom/create/ \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -d '{"name": "Test Chatroom"}'
-
-# 5. Send a message to AI
-curl -X POST https://your-app.onrender.com/chatroom/1/message/ \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -d '{"content": "Hello AI! Tell me a joke."}'
-```
 
 ### Using Postman
 
@@ -250,24 +166,6 @@ curl -X POST https://your-app.onrender.com/chatroom/1/message/ \
 2. **Set Environment Variables**: Add your base URL and JWT tokens
 3. **Test Flow**: Follow the authentication → chatroom → messaging flow
 
-## 📁 Project Structure
-
-```
-CLONE_GEMINI/
-├── 📁 gemini_backend/          # Main Django project
-│   ├── ⚙️ settings.py         # Production-ready configuration
-│   ├── 🔗 urls.py            # URL routing
-│   ├── 🐛 celery.py          # Celery task configuration
-│   └── 🌐 wsgi.py           # WSGI application entry
-├── 🔐 authentication/         # OTP & JWT authentication
-├── 💬 chatrooms/            # Chatroom & messaging logic
-├── 💳 subscriptions/        # Stripe payment integration
-├── 🛠️ core/                # Shared utilities & middleware
-├── 📋 requirements.txt     # Python dependencies
-├── 🚀 render.yaml         # Render deployment config
-├── 📄 Procfile           # Process definitions
-└── 🐍 runtime.txt        # Python version specification
-```
 
 ## 🔧 Key Components
 
@@ -302,7 +200,6 @@ CLONE_GEMINI/
 - **CORS Configuration**: Cross-origin security
 - **Input Validation**: Comprehensive data sanitization
 - **Error Handling**: Secure error responses
-- **SSL/TLS**: Production-ready encryption
 
 ## 📊 Performance Optimizations
 
@@ -312,42 +209,14 @@ CLONE_GEMINI/
 - **Connection Pooling**: Database connection management
 - **Static File Handling**: Optimized file serving
 
-## 🚀 Deployment Checklist
-
-### ✅ Pre-deployment
-- [ ] Environment variables configured
-- [ ] Database migrations applied
-- [ ] Static files collected
-- [ ] SSL certificates configured
-- [ ] Domain settings updated
-
-### ✅ Post-deployment
-- [ ] Health checks passing
-- [ ] API endpoints responding
-- [ ] Celery workers running
-- [ ] Redis connection stable
-- [ ] Monitoring alerts configured
-
-## 🤝 Contributing
-
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
-3. **Commit your changes**: `git commit -m 'Add amazing feature'`
-4. **Push to the branch**: `git push origin feature/amazing-feature`
-5. **Open a Pull Request**
 
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
 
-- **Documentation**: Check the API documentation above
-- **Issues**: Report bugs via GitHub Issues
-- **Discussions**: Join community discussions
-- **Email**: Contact for enterprise support
 
-## 🎯 Assessment Features
+## 🎯  Features
 
 | Feature | Status | Description |
 |---------|--------|-------------|
@@ -364,5 +233,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Built with ❤️ using Django, Redis, Celery, and Google Gemini API**
-
-*This project demonstrates a complete full-stack assessment with real-world production features including authentication, AI integration, payment processing, and scalable architecture.* 

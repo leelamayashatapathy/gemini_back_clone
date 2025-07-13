@@ -16,7 +16,13 @@ class SignupView(APIView):
         serializer = SignupSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
+            return Response({
+                'success': True,
+                'message': 'User registered successfully. Please verify your mobile number.',
+                'data': {
+                    'mobile': user.mobile
+                }
+            }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SendOTPView(APIView):
@@ -30,7 +36,10 @@ class SendOTPView(APIView):
             code = str(random.randint(100000, 999999))
             expires_at = timezone.now() + timezone.timedelta(minutes=5)
             OTP.objects.create(user=user, code=code, purpose=purpose, expires_at=expires_at)
-            return Response({'message': 'OTP sent', 'otp': code}, status=status.HTTP_200_OK)  # Mocked OTP
+            return Response({
+                'success': True,
+                'message': f'OTP sent successfully to {mobile}'
+            }, status=status.HTTP_200_OK)  # Mocked OTP
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class VerifyOTPView(APIView):
@@ -47,12 +56,35 @@ class VerifyOTPView(APIView):
                 if otp:
                     otp.is_used = True
                     otp.save()
+                    # Mark user as verified
+                    user.is_verified = True
+                    user.save()
                     refresh = RefreshToken.for_user(user)
-                    return Response({'message': 'OTP verified', 'refresh': str(refresh), 'access': str(refresh.access_token)}, status=status.HTTP_200_OK)
+                    return Response({
+                        'success': True,
+                        'message': 'OTP verified successfully',
+                        'data': {
+                            'access': str(refresh.access_token),
+                            'refresh': str(refresh),
+                            'user': {
+                                'id': user.id,
+                                'mobile': user.mobile,
+                                'is_verified': user.is_verified
+                            }
+                        }
+                    }, status=status.HTTP_200_OK)
                 else:
-                    return Response({'error': 'Invalid or expired OTP'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({
+                        'success': False,
+                        'error': 'Invalid or expired OTP',
+                        'code': 'INVALID_OTP'
+                    }, status=status.HTTP_400_BAD_REQUEST)
             except User.DoesNotExist:
-                return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({
+                    'success': False,
+                    'error': 'User not found',
+                    'code': 'USER_NOT_FOUND'
+                }, status=status.HTTP_404_NOT_FOUND)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ForgotPasswordView(APIView):
@@ -92,4 +124,7 @@ class UserProfileView(APIView):
     def get(self, request):
         """Returns details about the currently authenticated user"""
         serializer = UserProfileSerializer(request.user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({
+            'success': True,
+            'data': serializer.data
+        }, status=status.HTTP_200_OK)

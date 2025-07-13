@@ -1,4 +1,4 @@
-# Gemini Backend Clone - AI-Powered Chat Platform
+#  Gemini Backend Clone - AI-Powered Chat Platform
 
 A sophisticated Django REST Framework backend that creates an AI-powered chat experience using Google's Gemini API. This project demonstrates real-time messaging, OTP authentication, subscription management, and intelligent AI responses.
 

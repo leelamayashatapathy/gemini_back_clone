@@ -38,5 +38,5 @@ class ChangePasswordSerializer(serializers.Serializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'mobile', 'email', 'first_name', 'last_name', 'date_joined']
+        fields = ['id', 'mobile', 'email', 'date_joined']
         read_only_fields = ['id', 'date_joined'] 

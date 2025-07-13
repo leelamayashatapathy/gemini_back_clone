@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 import os
+import ssl
 from pathlib import Path
 import dj_database_url
 from datetime import timedelta
@@ -172,10 +173,17 @@ print(f"🔍 Environment REDIS_URL: {os.getenv('REDIS_URL', 'NOT_SET')}")
 print(f"🔍 Environment CELERY_BROKER_URL: {os.getenv('CELERY_BROKER_URL', 'NOT_SET')}")
 print(f"🔍 Environment CELERY_RESULT_BACKEND: {os.getenv('CELERY_RESULT_BACKEND', 'NOT_SET')}")
 
+CELERY_BROKER_USE_SSL = {
+    'ssl_cert_reqs': ssl.CERT_NONE  # disables SSL verification (safe for Upstash TLS)
+}
+
+CELERY_RESULT_BACKEND_USE_SSL = {
+    'ssl_cert_reqs': ssl.CERT_NONE
+}
 # Celery Settings
 # Use Upstash Redis URL as fallback instead of potentially malformed REDIS_URL
-CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://default:AcqKAAIjcDE4MDU2MWExMmFhNGU0NmRmYmM5Njk0Yzc4NzUwNTcyYXAxMA@true-quagga-51850.upstash.io:6379')
-CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://default:AcqKAAIjcDE4MDU2MWExMmFhNGU0NmRmYmM5Njk0Yzc4NzUwNTcyYXAxMA@true-quagga-51850.upstash.io:6379')
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'

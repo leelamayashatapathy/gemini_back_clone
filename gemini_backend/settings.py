@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 import os
-import ssl
 from pathlib import Path
 import dj_database_url
 from datetime import timedelta
@@ -165,21 +164,7 @@ REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 
 
 
-# Print Redis URL for debugging
-print(f"🔍 REDIS_URL: {REDIS_URL}")
-print(f"🔍 CELERY_BROKER_URL: {os.getenv('CELERY_BROKER_URL', REDIS_URL)}")
-print(f"🔍 CELERY_RESULT_BACKEND: {os.getenv('CELERY_RESULT_BACKEND', REDIS_URL)}")
-print(f"🔍 Environment REDIS_URL: {os.getenv('REDIS_URL', 'NOT_SET')}")
-print(f"🔍 Environment CELERY_BROKER_URL: {os.getenv('CELERY_BROKER_URL', 'NOT_SET')}")
-print(f"🔍 Environment CELERY_RESULT_BACKEND: {os.getenv('CELERY_RESULT_BACKEND', 'NOT_SET')}")
 
-CELERY_BROKER_USE_SSL = {
-    'ssl_cert_reqs': ssl.CERT_NONE  # disables SSL verification (safe for Upstash TLS)
-}
-
-CELERY_RESULT_BACKEND_USE_SSL = {
-    'ssl_cert_reqs': ssl.CERT_NONE
-}
 # Celery Settings
 # Use Upstash Redis URL as fallback instead of potentially malformed REDIS_URL
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')

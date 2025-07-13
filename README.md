@@ -2,34 +2,34 @@
 
 A sophisticated Django REST Framework backend that creates an AI-powered chat experience using Google's Gemini API. This project demonstrates real-time messaging, OTP authentication, subscription management, and intelligent AI responses.
 
-## ✨ Features
+##  Features
 
-### 🔐 **Authentication & Security**
+###  **Authentication & Security**
 - **OTP-based Authentication**: Secure mobile verification system
 - **JWT Token Management**: Stateless authentication with refresh tokens
 - **Rate Limiting**: Per-user request throttling with Redis
 - **CORS Protection**: Cross-origin resource sharing configuration
 
-### 💬 **AI-Powered Chatrooms**
+###  **AI-Powered Chatrooms**
 - **Real-time Messaging**: Instant message delivery and responses
 - **Google Gemini Integration**: Advanced AI responses using Google's latest model
 - **Context Awareness**: AI remembers conversation history
 - **Asynchronous Processing**: Background task processing with Celery
 
-### 💳 **Subscription Management**
+###  **Subscription Management**
 - **Stripe Integration**: Secure payment processing
 - **Tier-based Access**: Different features for free vs pro users
 - **Webhook Handling**: Real-time subscription event processing
 - **Payment Security**: PCI-compliant payment handling
 
-### 🚀 **Production Ready**
+###  **Production Ready**
 - **Redis Caching**: High-performance data caching
 - **Background Tasks**: Celery worker for async operations
 - **Error Handling**: Comprehensive exception management
 - **Logging**: Detailed application monitoring
 - **Deployment Ready**: Configured for Render hosting
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Component | Technology | Purpose |
 |-----------|------------|---------|
@@ -42,7 +42,7 @@ A sophisticated Django REST Framework backend that creates an AI-powered chat ex
 | **Payments** | Stripe | Subscription management |
 | **Deployment** | Render | Cloud hosting platform |
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 - Python 3.12+
@@ -84,7 +84,27 @@ celery -A gemini_backend worker --loglevel=info -P eventlet
 python manage.py runserver
 ```
 
-## 📡 API Endpoints
+##  API Endpoints
+
+Authentication Flow:
+POST @https://gemini-back-clone.onrender.com/auth/signup/ - Register
+POST @https://gemini-back-clone.onrender.com/auth/send-otp/ - Send OTP
+POST @https://gemini-back-clone.onrender.com/auth/verify-otp/ - Get JWT tokens
+GET @https://gemini-back-clone.onrender.com/auth/me/ - Get profile
+
+
+Chat Flow:
+
+GET @https://gemini-back-clone.onrender.com/chatroom/ - List chatrooms
+POST @https://gemini-back-clone.onrender.com/chatroom/ - Create chatroom
+GET @https://gemini-back-clone.onrender.com/chatroom/{id}/ - Get chatroom
+POST @https://gemini-back-clone.onrender.com/chatroom/{id}/message/ - Send message
+
+Subscription Flow:
+
+POST @https://gemini-back-clone.onrender.com/subscriptions/pro/ - Subscribe
+GET @https://gemini-back-clone.onrender.com/subscriptions/status/ - Check status
+
 
 ### Authentication Flow
 ```bash
@@ -147,17 +167,6 @@ GET /subscription/status/
 Authorization: Bearer <JWT_TOKEN>
 ```
 
-## 🌐 Production Deployment
-
-### Render Deployment (Recommended)
-
-1. **Push to GitHub**
-```bash
-git add .
-git commit -m "Production ready"
-git push origin main
-```
-
 
 
 ### Using Postman
@@ -169,25 +178,25 @@ git push origin main
 
 ## 🔧 Key Components
 
-### 1. **Authentication System** 🔐
+### 1. **Authentication System** 
 - **Custom User Model**: Mobile-based user identification
 - **OTP Verification**: Secure one-time password system
 - **JWT Tokens**: Stateless authentication with refresh capability
 - **Password Management**: Secure password change functionality
 
-### 2. **AI Chat System** 🤖
+### 2. **AI Chat System** 
 - **Gemini Integration**: Google's latest AI model
 - **Context Management**: Conversation history tracking
 - **Async Processing**: Background AI response generation
 - **Error Handling**: Graceful AI service failures
 
-### 3. **Subscription System** 💳
+### 3. **Subscription System** 
 - **Stripe Integration**: Professional payment processing
 - **Webhook Handling**: Real-time subscription events
 - **Tier Management**: Feature access based on subscription
 - **Payment Security**: PCI-compliant handling
 
-### 4. **Performance & Scalability** ⚡
+### 4. **Performance & Scalability** 
 - **Redis Caching**: High-performance data storage
 - **Rate Limiting**: Request throttling per user
 - **Background Tasks**: Celery for async operations
@@ -201,7 +210,7 @@ git push origin main
 - **Input Validation**: Comprehensive data sanitization
 - **Error Handling**: Secure error responses
 
-## 📊 Performance Optimizations
+## Performance Optimizations
 
 - **Redis Caching**: Frequently accessed data caching
 - **Database Optimization**: Efficient query patterns
@@ -210,26 +219,5 @@ git push origin main
 - **Static File Handling**: Optimized file serving
 
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-
-
-## 🎯  Features
-
-| Feature | Status | Description |
-|---------|--------|-------------|
-| ✅ **Authentication** | Complete | OTP + JWT system |
-| ✅ **AI Integration** | Complete | Gemini API integration |
-| ✅ **Real-time Chat** | Complete | Async message processing |
-| ✅ **Payment System** | Complete | Stripe subscription management |
-| ✅ **Rate Limiting** | Complete | Per-user request throttling |
-| ✅ **Caching** | Complete | Redis-based performance optimization |
-| ✅ **Background Tasks** | Complete | Celery worker implementation |
-| ✅ **Production Ready** | Complete | Render deployment configuration |
-| ✅ **API Documentation** | Complete | Comprehensive endpoint documentation |
-
----
 
 **Built with ❤️ using Django, Redis, Celery, and Google Gemini API**

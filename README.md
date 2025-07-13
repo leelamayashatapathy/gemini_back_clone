@@ -2,34 +2,34 @@
 
 A sophisticated Django REST Framework backend that creates an AI-powered chat experience using Google's Gemini API. This project demonstrates real-time messaging, OTP authentication, subscription management, and intelligent AI responses.
 
-## ✨ Features
+##  Features
 
-### 🔐 **Authentication & Security**
+###  **Authentication & Security**
 - **OTP-based Authentication**: Secure mobile verification system
 - **JWT Token Management**: Stateless authentication with refresh tokens
 - **Rate Limiting**: Per-user request throttling with Redis
 - **CORS Protection**: Cross-origin resource sharing configuration
 
-### 💬 **AI-Powered Chatrooms**
+###  **AI-Powered Chatrooms**
 - **Real-time Messaging**: Instant message delivery and responses
 - **Google Gemini Integration**: Advanced AI responses using Google's latest model
 - **Context Awareness**: AI remembers conversation history
 - **Asynchronous Processing**: Background task processing with Celery
 
-### 💳 **Subscription Management**
+###  **Subscription Management**
 - **Stripe Integration**: Secure payment processing
 - **Tier-based Access**: Different features for free vs pro users
 - **Webhook Handling**: Real-time subscription event processing
 - **Payment Security**: PCI-compliant payment handling
 
-### 🚀 **Production Ready**
+###  **Production Ready**
 - **Redis Caching**: High-performance data caching
 - **Background Tasks**: Celery worker for async operations
 - **Error Handling**: Comprehensive exception management
 - **Logging**: Detailed application monitoring
 - **Deployment Ready**: Configured for Render hosting
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Component | Technology | Purpose |
 |-----------|------------|---------|
@@ -42,7 +42,7 @@ A sophisticated Django REST Framework backend that creates an AI-powered chat ex
 | **Payments** | Stripe | Subscription management |
 | **Deployment** | Render | Cloud hosting platform |
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 - Python 3.12+
@@ -84,7 +84,7 @@ celery -A gemini_backend worker --loglevel=info -P eventlet
 python manage.py runserver
 ```
 
-## 📡 API Endpoints
+##  API Endpoints
 
 ### Authentication Flow
 ```bash

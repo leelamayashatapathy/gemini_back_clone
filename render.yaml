@@ -19,11 +19,11 @@ services:
           name: gemini-backend-postgres
           property: connectionString
       - key: REDIS_URL
-        value: redis://default:AcqKAAIjcDE4MDExMmFhNGU0NmRmYmM5Njk0Yzc4NzUwNTcyYXAxMA@true-quagga-51850.upstash.io:6379
+        value: rediss://default:AcqKAAIjcDE4MDU2MWExMmFhNGU0NmRmYmM5Njk0Yzc4NzUwNTcyYXAxMA@true-quagga-51850.upstash.io:6379
       - key: CELERY_BROKER_URL
-        value: redis://default:AcqKAAIjcDE4MDExMmFhNGU0NmRmYmM5Njk0Yzc4NzUwNTcyYXAxMA@true-quagga-51850.upstash.io:6379
+        value: rediss://default:AcqKAAIjcDE4MDU2MWExMmFhNGU0NmRmYmM5Njk0Yzc4NzUwNTcyYXAxMA@true-quagga-51850.upstash.io:6379
       - key: CELERY_RESULT_BACKEND
-        value: redis://default:AcqKAAIjcDE4MDExMmFhNGU0NmRmYmM5Njk0Yzc4NzUwNTcyYXAxMA@true-quagga-51850.upstash.io:6379
+        value: rediss://default:AcqKAAIjcDE4MDU2MWExMmFhNGU0NmRmYmM5Njk0Yzc4NzUwNTcyYXAxMA@true-quagga-51850.upstash.io:6379
       - key: GEMINI_API_KEY
         sync: false
       - key: STRIPE_PUBLISHABLE_KEY
@@ -61,7 +61,3 @@ services:
     name: gemini-backend-postgres
     env: postgresql
     plan: free
-
-  - type: redis
-    name: gemini-backend-redis
-    ipAllowList: [] 

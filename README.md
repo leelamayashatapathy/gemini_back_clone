@@ -86,25 +86,66 @@ python manage.py runserver
 
 ##  API Endpoints
 
-Authentication Flow:
-POST @https://gemini-back-clone.onrender.com/auth/signup/ - Register
-POST @https://gemini-back-clone.onrender.com/auth/send-otp/ - Send OTP
-POST @https://gemini-back-clone.onrender.com/auth/verify-otp/ - Get JWT tokens
-GET @https://gemini-back-clone.onrender.com/auth/me/ - Get profile
+### Authentication Flow
+```bash
+# 1. Register User
+POST /auth/signup/
+{
+  "mobile": "1234567890",
+  "password": "securepassword123"
+}
 
+# 2. Send OTP
+POST /auth/send-otp/
+{
+  "mobile": "1234567890",
+  "purpose": "login"
+}
 
-Chat Flow:
+# 3. Verify OTP & Get JWT
+POST /auth/verify-otp/
+{
+  "mobile": "1234567890",
+  "code": "123456",
+  "purpose": "login"
+}
+```
 
-GET @https://gemini-back-clone.onrender.com/chatroom/ - List chatrooms
-POST @https://gemini-back-clone.onrender.com/chatroom/ - Create chatroom
-GET @https://gemini-back-clone.onrender.com/chatroom/{id}/ - Get chatroom
-POST @https://gemini-back-clone.onrender.com/chatroom/{id}/message/ - Send message
+### Chatroom Management
+```bash
+# Create Chatroom
+POST /chatroom/create/
+Authorization: Bearer <JWT_TOKEN>
+{
+  "name": "My AI Assistant"
+}
 
-Subscription Flow:
+# List User's Chatrooms
+GET /chatroom/
+Authorization: Bearer <JWT_TOKEN>
 
-POST @https://gemini-back-clone.onrender.com/subscriptions/pro/ - Subscribe
-GET @https://gemini-back-clone.onrender.com/subscriptions/status/ - Check status
+# Get Chatroom with Messages
+GET /chatroom/{id}/
+Authorization: Bearer <JWT_TOKEN>
 
+# Send Message (Triggers AI Response)
+POST /chatroom/{id}/message/
+Authorization: Bearer <JWT_TOKEN>
+{
+  "content": "Hello AI! How are you today?"
+}
+```
+
+### Subscription Management
+```bash
+# Create Pro Subscription
+POST /subscription/pro/
+Authorization: Bearer <JWT_TOKEN>
+
+# Check Subscription Status
+GET /subscription/status/
+Authorization: Bearer <JWT_TOKEN>
+```
 
 ### Authentication Flow
 ```bash
